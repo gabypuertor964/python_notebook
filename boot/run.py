@@ -91,7 +91,7 @@ def print_suboptions(options: dict):
 while True:
 
     # Mostrar el titulo del menu
-    title('Notebook Gaby Puerto',True)
+    title('Notebook Gaby Puerto')
 
     # Mostrar las opciones del menu y obtener la seleccion del usuario
     print_options(themes, "Seleccione un tema","Finalizar Ejecucion")

@@ -5,18 +5,18 @@ import sys
 sys.path.append(path.abspath(path.join(path.dirname(__file__), '../../')))
 
 # Importaciones requeridas
-from classes.table import Table
+from classes.sqlite import SqLite
 
 # Tabla: Contactos/contacts
-class Contact(Table):
+class Contact(SqLite):
 
     # Actualizar la ruta de la base de datos
-    Table.set_route("contacts.db")
+    SqLite.data_access["route"] = "contacts.db"
 
     # Crear la tabla
     @staticmethod
     def create_table():
-        return Table.execute("""
+        return SqLite.execute("""
             CREATE TABLE IF NOT EXISTS contacts(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 names TEXT NOT NULL,
@@ -37,7 +37,7 @@ class Contact(Table):
     def select():
 
         # Ejecutar la consulta
-        response = Table.execute("SELECT * FROM contacts")
+        response = SqLite.execute("SELECT * FROM contacts")
 
         # Verificar si la consulta fue exitosa y se obtuvieron registros
         if response["status"] and len(response["result"]) > 0:
@@ -53,13 +53,13 @@ class Contact(Table):
     # Obtener un contacto
     @staticmethod
     def get(id: int):
-        return Table.execute("SELECT * FROM contacts WHERE id = ?", (id,))
+        return SqLite.execute("SELECT * FROM contacts WHERE id = ?", (id,))
 
 
     # Crear un contacto
     @staticmethod
     def create(names: str, surnames: str, phone: int):
-        return Table.execute("INSERT INTO contacts (names, surnames, phone) VALUES (?, ?, ?)", (names, surnames, phone))
+        return SqLite.execute("INSERT INTO contacts (names, surnames, phone) VALUES (?, ?, ?)", (names, surnames, phone))
 
 
     # Actualizar un contacto
@@ -70,12 +70,12 @@ class Contact(Table):
         surnames = values.get("surnames", self.surnames)
         phone = values.get("phone", self.phone)
 
-        return Table.execute("UPDATE contacts SET names = ?, surnames = ?, phone = ? WHERE id = ?", (names, surnames, phone, self.id))
+        return SqLite.execute("UPDATE contacts SET names = ?, surnames = ?, phone = ? WHERE id = ?", (names, surnames, phone, self.id))
     
 
     # Eliminar un contacto
     def delete(self):
-        return Table.execute("DELETE FROM contacts WHERE id = ?", (self.id,))
+        return SqLite.execute("DELETE FROM contacts WHERE id = ?", (self.id,))
 
 
     # Metodo constructor
@@ -83,9 +83,3 @@ class Contact(Table):
 
         # Ejecucion de metodo padre
         super().__init__(id=id, names=names, surnames=surnames, phone=phone)
-
-# Crear la tabla de contactos
-print(Contact.create_table())
-
-# Crear un contacto
-Contact.create("Gaby", "Puerto", 123456789)
