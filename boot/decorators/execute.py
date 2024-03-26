@@ -10,7 +10,8 @@ def execute(*args, debug=False):
             # Diccionario de respuestas
             responses = {
                 TypeError: "Argumentos invalidos",
-                ZeroDivisionError: "No se puede dividir entre 0"
+                ZeroDivisionError: "No se puede dividir entre 0",
+                ValueError: "Valor invalido"
             }
 
             try:
@@ -48,4 +49,3 @@ def execute(*args, debug=False):
         return decorator(args[0])
     else:
         return decorator
-
